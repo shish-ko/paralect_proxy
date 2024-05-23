@@ -8,11 +8,13 @@ const port = 3000;
 const corsOptions = {
   origin: 'http://localhost:5173/',
 };
-
+// https://image.tmdb.org/t/p/original/${req.params.id}
 const app=express();
 
-app.use(cors(corsOptions));
-app.get('/media/:id', (req, res)=> res(proxy(`https://image.tmdb.org/t/p/original/${req.params.id}`)));
+app.get('/media/:id', (req, res)=> proxy('https://image.tmdb.org', {
+  proxyReqPathResolver: ()=>`/t/p/original/${req.params.id}`
+})(req, res));
+app.use(cors());
 app.use(proxy('https://api.themoviedb.org', {
   
   proxyReqOptDecorator: (proxyReqOpts) => {
