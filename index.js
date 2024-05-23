@@ -11,7 +11,8 @@ const corsOptions = {
 
 const app=express();
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.get('/media/:id', (req, res)=> res(proxy(`https://image.tmdb.org/t/p/original/${req.params.id}`)));
 app.use(proxy('https://api.themoviedb.org', {
   
   proxyReqOptDecorator: (proxyReqOpts) => {
@@ -20,5 +21,6 @@ app.use(proxy('https://api.themoviedb.org', {
   }
   
 }))
+// app.get('/search', (req, res)=> res(proxy(`https://image.tmdb.org/t/p/original/${req.params.id}`)))
 
 app.listen(port);
